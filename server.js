@@ -312,6 +312,18 @@ io.sockets.on('connection', function (socket) {
 		sp[currentSocketPort[socket.id]].lastSerialRealLine = '';
 	});
 
+	// do soft reset, this has it's own clear and direct function call
+	socket.on('doHoldAndClear', function (data) {
+		// feed hold for grbl
+		sp[currentSocketPort[socket.id]].port.write("!");
+		// reset vars
+		sp[currentSocketPort[socket.id]].q = [];
+		sp[currentSocketPort[socket.id]].qCurrentMax = 0;
+		sp[currentSocketPort[socket.id]].lastSerialWrite = [];
+		sp[currentSocketPort[socket.id]].lastSerialRealLine = '';
+	});
+
+
 	// lines from web ui
 	socket.on('gcodeLine', function (data) {
 

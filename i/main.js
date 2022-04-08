@@ -216,7 +216,11 @@ $(document).ready(function() {
 		socket.emit('doReset', 1);
 	});
 
-	$('#sendGrblHelp').on('click', function() {
+	$('#sendHold').on('click', function() {
+		socket.emit('doHoldAndClear', 1);
+	});
+
+    $('#sendGrblHelp').on('click', function() {
 		socket.emit('gcodeLine', { line: '$' });
 	});
 
