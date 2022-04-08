@@ -154,6 +154,7 @@ function serialData(data, port) {
 	// handle ?
 	if (data.indexOf('<') == 0) {
 		// https://github.com/grbl/grbl/wiki/Configuring-Grbl-v0.8#---current-status
+        // https://github-wiki-see.page/m/gnea/grbl/wiki/Grbl-v1.1-Interface  search for Real-time Status Reports
 
 		// remove first <
 		var t = data.substr(1);
@@ -161,10 +162,51 @@ function serialData(data, port) {
 		// remove last >
 		t = t.substr(0,t.length-2);
 
-		// split on , and :
-		t = t.split(/,|:/);
+		console.log(t);
+        fields = t.split("|");
 
-		emitToPortSockets(port, 'machineStatus', {'status':t[0], 'mpos':[t[2], t[3], t[4]], 'wpos':[t[6], t[7], t[8]]});
+        const machineStatus = {
+            status: "Unkown", 
+            mpos: [null, null, null], 
+            wpos: [null, null, null],
+        };
+
+        for (let i = 0; i < fields.length; i++) {
+            const f = fields[i];
+            t = f.split(/,|:/);
+            if (i === 0) {
+                //machine state and substate
+                machineStatus.status = t[0];
+            } else {
+                console.log(t);
+                switch (t[0]) {
+                case "MPos":
+                    machineStatus.mpos = [t[1], t[2], t[3]];
+                    break;
+                case "WPos":
+                    machineStatus.wpos = [t[1], t[2], t[3]];
+                    break;
+                case "WCO": //Work Coordinate Offset
+                    break;
+                case "Bf": //Buffer state
+                    break;
+                case "Ln": //Line number
+                    break;
+                case "F":  //Current feed
+                    break;
+                case "Fs": //Current feed and speed
+                    break;
+                case "Pn":  //Input Pin State
+                    break;
+                case "Ov":  //Override Values
+                    break;
+                case "A":  //Accessory State
+                    break;
+                }
+            }
+        }
+		
+		emitToPortSockets(port, 'machineStatus', machineStatus);
 
 		return;
 	}
