@@ -217,7 +217,7 @@ $(document).ready(function() {
 	});
 
 	$('#sendHold').on('click', function() {
-		socket.emit('doHoldAndClear', 1);
+		socket.emit('gcodeLine', { line: '!' });
 	});
 
     $('#sendGrblHelp').on('click', function() {
