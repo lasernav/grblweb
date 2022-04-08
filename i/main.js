@@ -220,6 +220,10 @@ $(document).ready(function() {
 		socket.emit('gcodeLine', { line: '!' });
 	});
 
+    $('#sendResume').on('click', function() {
+		socket.emit('gcodeLine', { line: '~' });
+	});
+    
     $('#sendGrblHelp').on('click', function() {
 		socket.emit('gcodeLine', { line: '$' });
 	});
