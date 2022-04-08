@@ -204,7 +204,7 @@ function serialData(data, port) {
                 case "F":  //Current feed
                     machineStatus.feed = t[1];
                     break;
-                case "Fs": //Current feed and speed
+                case "FS": //Current feed and speed
                     machineStatus.feed = t[1];
                     machineStatus.speed = t[2];
                     break;
