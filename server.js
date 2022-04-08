@@ -105,7 +105,12 @@ serialport.list().then(function(ports) {
 	for (var i=0; i<ports.length; i++) {
 	!function outer(i){
 
-        states[i] = {};
+        states[i] = {
+            status: "Unknown", 
+            mpos: [null, null, null], 
+            wpos: [null, null, null],
+            wco: [null, null, null],
+        };
 
 		sp[i] = {};
 		sp[i].port = ports[i].path;
@@ -169,13 +174,8 @@ function serialData(data, port) {
         fields = t.split("|");
 
         const machineStatus = {
-            status: "Unkown", 
-            mpos: [null, null, null], 
-            wpos: [null, null, null],
-            wco: [null, null, null],
+            wco: states[port].wco,
         };
-        let missingWpos = true;
-        let missingMpos = true;
 
         for (let i = 0; i < fields.length; i++) {
             const f = fields[i];
@@ -188,11 +188,9 @@ function serialData(data, port) {
                 switch (t[0]) {
                 case "MPos":
                     machineStatus.mpos = [t[1], t[2], t[3]];
-                    missingMpos = false;
                     break;
                 case "WPos":
                     machineStatus.wpos = [t[1], t[2], t[3]];
-                    missingWpos = false;
                     break;
                 case "WCO": //Work Coordinate Offset
                     machineStatus.wco = [t[1], t[2], t[3]];
@@ -214,17 +212,19 @@ function serialData(data, port) {
                 }
             }
         }
+        if ((machineStatus.wco[0] !== null) && (machineStatus.mpos) && (!machineStatus.wpos)) {
+            //calculate missing Wpos
+            for (let i = 0; i < 3; i++) {
+                machineStatus.wpos[i] = machineStatus.mpos[i] - machineStatus.wco[i];
+            }
+        }
+        if ((machineStatus.wco[0] !== null) && (machineStatus.wpos) && (!machineStatus.mpos)) {
+            //calculate missing Mpos
+            for (let i = 0; i < 3; i++) {
+                machineStatus.mpos[i] = machineStatus.wpos[i] + machineStatus.wco[i];
+            }
+        }
 		states[port] = { ...states[port], ...machineStatus}
-        if ((missingWpos) && (states[port].wco[0] !== null)) {
-            for (let i = 0; i < 3; i++) {
-                states[port].wpos[i] = states[port].mpos[i] - states[port].wco[i];
-            }
-        }
-        if ((missingMpos) && (states[port].wco[0] !== null)) {
-            for (let i = 0; i < 3; i++) {
-                states[port].mpos[i] = states[port].wpos[i] + states[port].wco[i];
-            }
-        }
 		emitToPortSockets(port, 'machineStatus', states[port]);
 
 		return;
