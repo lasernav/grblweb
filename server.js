@@ -214,12 +214,14 @@ function serialData(data, port) {
         }
         if ((machineStatus.wco[0] !== null) && (machineStatus.mpos) && (!machineStatus.wpos)) {
             //calculate missing Wpos
+            machineStatus.wpos = [0, 0, 0];
             for (let i = 0; i < 3; i++) {
                 machineStatus.wpos[i] = machineStatus.mpos[i] - machineStatus.wco[i];
             }
         }
         if ((machineStatus.wco[0] !== null) && (machineStatus.wpos) && (!machineStatus.mpos)) {
             //calculate missing Mpos
+            machineStatus.mpos = [0, 0, 0];
             for (let i = 0; i < 3; i++) {
                 machineStatus.mpos[i] = machineStatus.wpos[i] + machineStatus.wco[i];
             }
