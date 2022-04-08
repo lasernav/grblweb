@@ -110,6 +110,8 @@ serialport.list().then(function(ports) {
             mpos: [null, null, null], 
             wpos: [null, null, null],
             wco: [null, null, null],
+            feed: null,
+            speed: null,
         };
 
 		sp[i] = {};
@@ -200,8 +202,11 @@ function serialData(data, port) {
                 case "Ln": //Line number
                     break;
                 case "F":  //Current feed
+                    machineStatus.feed = t[1];
                     break;
                 case "Fs": //Current feed and speed
+                    machineStatus.feed = t[1];
+                    machineStatus.speed = t[2];
                     break;
                 case "Pn":  //Input Pin State
                     break;

@@ -194,6 +194,8 @@ $(document).ready(function() {
 		$('#wX').html('X: '+data.wpos[0]);
 		$('#wY').html('Y: '+data.wpos[1]);
 		$('#wZ').html('Z: '+data.wpos[2]);
+        $('#mFeed').html('F: '+data.feed);
+        $('#mSpeed').html('S: '+data.speed);
 		//console.log(data);
 	});
 
