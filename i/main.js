@@ -272,6 +272,10 @@ $(document).ready(function() {
 		socket.emit('gcodeLine', { line: 'G92 X0 Y0 Z0' });
 	});
 
+	$('#sendHome').on('click', function() {
+		socket.emit('gcodeLine', { line: '$H' });
+	});
+
 	$('#sendCommand').on('click', function() {
 
 		socket.emit('gcodeLine', { line: $('#command').val() });
