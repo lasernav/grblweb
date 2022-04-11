@@ -159,6 +159,15 @@ function emitToPortSockets(port, evt, obj) {
 	}
 }
 
+function getFloat(v) {
+    try {
+        return parseFloat(v);
+    } catch (e) {
+
+    }
+    return 0;
+}
+
 function serialData(data, port) {
 
 	// handle ?
@@ -189,24 +198,24 @@ function serialData(data, port) {
                 console.log(t);
                 switch (t[0]) {
                 case "MPos":
-                    machineStatus.mpos = [t[1], t[2], t[3]];
+                    machineStatus.mpos = [getFloat(t[1]), getFloat(t[2]), getFloat(t[3])];
                     break;
                 case "WPos":
-                    machineStatus.wpos = [t[1], t[2], t[3]];
+                    machineStatus.wpos = [getFloat(t[1]), getFloat(t[2]), getFloat(t[3])];
                     break;
                 case "WCO": //Work Coordinate Offset
-                    machineStatus.wco = [t[1], t[2], t[3]];
+                    machineStatus.wco = [getFloat(t[1]), getFloat(t[2]), getFloat(t[3])];
                     break;
                 case "Bf": //Buffer state
                     break;
                 case "Ln": //Line number
                     break;
                 case "F":  //Current feed
-                    machineStatus.feed = t[1];
+                    machineStatus.feed = getFloat(t[1]);
                     break;
                 case "FS": //Current feed and speed
-                    machineStatus.feed = t[1];
-                    machineStatus.speed = t[2];
+                    machineStatus.feed = getFloat(t[1]);
+                    machineStatus.speed = getFloat(t[2]);
                     break;
                 case "Pn":  //Input Pin State
                     break;
