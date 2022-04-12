@@ -98,11 +98,19 @@ serialport.list().then(function(ports) {
 
 	// if on rPi - http://www.hobbytronics.co.uk/raspberry-pi-serial-port
 
-	allPorts = ports;
+    //console.log(ports);
+	allPorts = ports.map((p) => {
+        if ((p.vendorId === "0403") && (p.productId === "6001")) {
+            return p;
+        }
+        return;
+    });
 
-	//console.log(ports);
+	console.log(allPorts);
 
-	for (var i=0; i<ports.length; i++) {
+	for (var i=0; i<allPorts.length; i++) {
+
+        
 	!function outer(i){
 
         states[i] = {
@@ -115,7 +123,7 @@ serialport.list().then(function(ports) {
         };
 
 		sp[i] = {};
-		sp[i].port = ports[i].path;
+		sp[i].port = allPorts[i].path;
 		sp[i].q = [];
 		sp[i].qCurrentMax = 0;
 		sp[i].lastSerialWrite = [];
@@ -123,7 +131,7 @@ serialport.list().then(function(ports) {
 		// read on the parser
 		sp[i].handle = new serialport.parsers.Readline({delimiter: '\r\n'});
 		// 1 means clear to send, 0 means waiting for response
-		sp[i].port = new serialport(ports[i].path, {
+		sp[i].port = new serialport(allPorts[i].path, {
 			baudRate: config.serialBaudRate
 		});
 		// write on the port
