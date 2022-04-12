@@ -26,7 +26,7 @@
 */
 
 function formatValue(v) {
-    if (v) {
+    if (v || v === 0) {
         return parseFloat(v).toFixed(3);
     }
     return "";
