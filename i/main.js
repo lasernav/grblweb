@@ -180,6 +180,12 @@ $(document).ready(function() {
 			}
 			$('#webcam').css('display','inline-block');
 		}
+		if (data.showWebCam2 == true) {
+			// show the webcam and link
+            $('#wcImg2').attr('src', data.webcam2Url);
+            $('#wcLink2').attr('href', data.webcam2Page);
+			$('#webcam2').css('display','inline-block');
+		}
 	});
 
 	socket.on('ports', function (data) {

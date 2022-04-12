@@ -58,6 +58,10 @@ config.showWebCam = true;
 config.webcamUrl = "http://10.0.0.117:5000/video_feed_color";
 config.webcamPage = "http://10.0.0.117:1880/ui";
 
+config.showWebCam2 = true;
+config.webcam2Url = "http://10.0.0.117:5000/video_feed_thermal";
+config.webcam2Page = "http://10.0.0.117:1880/ui";
+
 app.listen(config.webPort);
 var fileServer = new static.Server('./i');
 
