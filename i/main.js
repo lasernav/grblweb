@@ -25,6 +25,13 @@
 
 */
 
+function formatValue(v) {
+    if (v) {
+        return parseFloat(v).toFixed(3);
+    }
+    return "";
+}
+
 $(document).ready(function() {
 
 	// init vars for better controls
@@ -188,14 +195,14 @@ $(document).ready(function() {
 
 	socket.on('machineStatus', function (data) {
 		$('#mStatus').html(data.status);
-		$('#mX').html('X: '+data.mpos[0]);
-		$('#mY').html('Y: '+data.mpos[1]);
-		$('#mZ').html('Z: '+data.mpos[2]);
-		$('#wX').html('X: '+data.wpos[0]);
-		$('#wY').html('Y: '+data.wpos[1]);
-		$('#wZ').html('Z: '+data.wpos[2]);
-        $('#mFeed').html('F: '+data.feed);
-        $('#mSpeed').html('S: '+data.speed);
+		$('#mX').html('X: ' + formatValue(data.mpos[0]));
+		$('#mY').html('Y: ' + formatValue(data.mpos[1]));
+		$('#mZ').html('Z: ' + formatValue(data.mpos[2]));
+		$('#wX').html('X: ' + formatValue(data.wpos[0]));
+		$('#wY').html('Y: ' + formatValue(data.wpos[1]));
+		$('#wZ').html('Z: ' + formatValue(data.wpos[2]));
+        $('#mFeed').html('F: ' + formatValue(data.feed));
+        $('#mSpeed').html('S: ' + formatValue(data.speed));
 		//console.log(data);
 	});
 
