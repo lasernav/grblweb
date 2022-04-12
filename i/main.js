@@ -26,10 +26,10 @@
 */
 
 function formatValue(v) {
-    if (v || v === 0) {
-        return parseFloat(v).toFixed(3);
-    }
-    return "";
+	if (v || v === 0) {
+		return parseFloat(v).toFixed(3);
+	}
+	return "";
 }
 
 $(document).ready(function() {
@@ -57,23 +57,23 @@ $(document).ready(function() {
 	$('#betterControlsPoint').css('left', (betterWidth/2)-(bPointWidth/2) + 'px');
 
 	// on mousedown, set isMouseDown to true
-        $('#betterControls').mousedown(function(event) {
+		$('#betterControls').mousedown(function(event) {
 		event.preventDefault();
 		isMouseDown = true;
-        });
-        document.getElementById('betterControls').addEventListener('touchstart', function(event) {
+		});
+		document.getElementById('betterControls').addEventListener('touchstart', function(event) {
 		event.preventDefault();
 		isMouseDown = true;
 	}, false);
 
 	// on mouseup reset center point
-        $('#betterControls').mouseup(function(event) {
+		$('#betterControls').mouseup(function(event) {
 		event.preventDefault();
 		isMouseDown = false;
 		$('#betterControlsPoint').css('top', (betterHeight/2)-(bPointHeight/2) + 'px');
 		$('#betterControlsPoint').css('left', (betterWidth/2)-(bPointWidth/2) + 'px');
 	});
-        document.getElementById('betterControls').addEventListener('touchend', function(event) {
+		document.getElementById('betterControls').addEventListener('touchend', function(event) {
 		event.preventDefault();
 		isMouseDown = false;
 		$('#betterControlsPoint').css('top', (betterHeight/2)-(bPointHeight/2) + 'px');
@@ -120,7 +120,7 @@ $(document).ready(function() {
 	}, 200);
 
 	// on mousemove send gcode
-        $('#betterControls').mousemove(function(event) {
+		$('#betterControls').mousemove(function(event) {
 		if (isMouseDown) {
 				betterX = event.pageX-this.offsetLeft;
 				betterY = event.pageY-this.offsetTop;
@@ -130,8 +130,8 @@ $(document).ready(function() {
 				$('#betterControlsPoint').css('left',betterX-(bPointWidth/2) + 'px');
 
 		}
-        });
-        document.getElementById('betterControls').addEventListener('touchmove', function(event) {
+		});
+		document.getElementById('betterControls').addEventListener('touchmove', function(event) {
 		event.preventDefault();
 		if (isMouseDown) {
 				betterX = event.pageX-this.offsetLeft;
@@ -142,7 +142,7 @@ $(document).ready(function() {
 				$('#betterControlsPoint').css('left',betterX-(bPointWidth/2) + 'px');
 
 		}
-        });
+		});
 
 	$( window ).resize(function() {
 		// when header resizes, move ui down
@@ -166,13 +166,18 @@ $(document).ready(function() {
 		if (data.showWebCam == true) {
 			// show the webcam and link
 
-			var webroot = window.location.protocol+'//'+window.location.hostname;
-			//console.log(webroot);
-
-			$('#wcImg').attr('src', webroot+':'+data.webcamPort+'/?action=stream');
-
-			$('#wcLink').attr('href', webroot+':'+data.webcamPort+'/javascript_simple.html');
-
+			if (data.webcamUrl) {
+				$('#wcImg').attr('src', data.webcamUrl);
+				$('#wcLink').attr('href', data.webcamPage);
+			} else {
+				var webroot = window.location.protocol+'//'+window.location.hostname;
+				//console.log(webroot);
+	
+				$('#wcImg').attr('src', webroot+':'+data.webcamPort+'/?action=stream');
+	
+				$('#wcLink').attr('href', webroot+':'+data.webcamPort+'/javascript_simple.html');
+	
+			}
 			$('#webcam').css('display','inline-block');
 		}
 	});
@@ -201,8 +206,8 @@ $(document).ready(function() {
 		$('#wX').html('X: ' + formatValue(data.wpos[0]));
 		$('#wY').html('Y: ' + formatValue(data.wpos[1]));
 		$('#wZ').html('Z: ' + formatValue(data.wpos[2]));
-        $('#mFeed').html('F: ' + formatValue(data.feed));
-        $('#mSpeed').html('S: ' + formatValue(data.speed));
+		$('#mFeed').html('F: ' + formatValue(data.feed));
+		$('#mSpeed').html('S: ' + formatValue(data.speed));
 		//console.log(data);
 	});
 
@@ -229,11 +234,11 @@ $(document).ready(function() {
 		socket.emit('gcodeLine', { line: '!' });
 	});
 
-    $('#sendResume').on('click', function() {
+	$('#sendResume').on('click', function() {
 		socket.emit('gcodeLine', { line: '~' });
 	});
-    
-    $('#sendGrblHelp').on('click', function() {
+	
+	$('#sendGrblHelp').on('click', function() {
 		socket.emit('gcodeLine', { line: '$' });
 	});
 
