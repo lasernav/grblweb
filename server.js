@@ -99,11 +99,11 @@ serialport.list().then(function(ports) {
 	// if on rPi - http://www.hobbytronics.co.uk/raspberry-pi-serial-port
 
     //console.log(ports);
-	allPorts = ports.map((p) => {
+	allPorts = ports.filter((p) => {
         if ((p.vendorId === "0403") && (p.productId === "6001")) {
-            return p;
+            return true;
         }
-        return;
+        return false;
     });
 
 	console.log(allPorts);
